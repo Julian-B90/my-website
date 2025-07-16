@@ -27,7 +27,7 @@ jobs:
       - name: Astro FTP
         # You may pin to the exact commit or the version.
         # uses: radenpioneer/astro-ftp-deploy@71cf7df82b0da73fa8565991c94680e5d5350508
-        uses: radenpioneer/astro-ftp-deploy@v0.1.1
+        uses: radenpioneer/astro-ftp-deploy@813fd9d20fa61d7523ea8bc3ad37389c5a183744
         with:
           # FTP server hostname
           server: ssh.strato.de
