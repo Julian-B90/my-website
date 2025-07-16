@@ -1,0 +1,30 @@
+---
+const { open, setOpen } = Astro.props;
+---
+<button class="burger" aria-label="Menü öffnen" aria-expanded={open} aria-controls="mobile-menu" onclick={() => setOpen(!open)}>
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</button>
+<style>
+.burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 200;
+}
+.bar {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #1a202c;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+</style>
