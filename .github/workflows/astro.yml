@@ -1,0 +1,53 @@
+# Sample workflow for building and deploying an Astro site to GitHub Pages
+#
+# To get started with Astro see: https://docs.astro.build/en/getting-started/
+#
+name: Deploy Astro site to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  BUILD_PATH: "." # default value when not using subfolders
+  # BUILD_PATH: subfolder
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: sftp_user
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Astro FTP
+        # You may pin to the exact commit or the version.
+        # uses: radenpioneer/astro-ftp-deploy@71cf7df82b0da73fa8565991c94680e5d5350508
+        uses: radenpioneer/astro-ftp-deploy@v0.1.1
+        with:
+          # FTP server hostname
+          server: ssh.strato.de
+          # FTP username
+          username: ${{ secrets.SFTP_USER }}
+          # FTP password
+          password: ${{ secrets.SFTP_PW }}
+          # Path to upload to (on the server). Must end with trailing slash /
+          # directory: # optional, default is public_html/
+          # Protocol to use, supports `ftp`, `ftps` and `ftps-legacy`. Defaults to `ftp`
+          protocol: ftps
+          # Remote server port
+          port: 22 # optional, default is 21
+          # Path of the directory containing your site
+          # path: # optional, default is .
+          # The node version to use
+          node-version: 22 # optional, default is 18
+          # If not automatically detectable, you may specify your preferred package manager
+          package-manager: npm # optional, default is 
+          # If the dependency file is located inside the folder specified by path
+          # resolve-dep-from-path: # optional, default is true
+          # 
+          # dry-run: # optional
