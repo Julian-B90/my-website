@@ -24,30 +24,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Astro FTP
-        # You may pin to the exact commit or the version.
-        # uses: radenpioneer/astro-ftp-deploy@71cf7df82b0da73fa8565991c94680e5d5350508
-        uses: radenpioneer/astro-ftp-deploy@813fd9d20fa61d7523ea8bc3ad37389c5a183744
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          # FTP server hostname
-          server: ssh.strato.de
-          # FTP username
-          username: ${{ secrets.SFTP_USER }}
-          # FTP password
-          password: ${{ secrets.SFTP_PW }}
-          # Path to upload to (on the server). Must end with trailing slash /
-          # directory: # optional, default is public_html/
-          # Protocol to use, supports `ftp`, `ftps` and `ftps-legacy`. Defaults to `ftp`
-          # protocol: ftps
-          # Remote server port
-          port: 22 # optional, default is 21
-          # Path of the directory containing your site
-          # path: # optional, default is .
-          # The node version to use
-          node-version: 22 # optional, default is 18
-          # If not automatically detectable, you may specify your preferred package manager
-          package-manager: npm # optional, default is 
-          # If the dependency file is located inside the folder specified by path
-          # resolve-dep-from-path: # optional, default is true
-          # 
-          # dry-run: # optional
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro site
+        run: npm run build
+
+      - name: Deploy files via SFTP
+        uses: pressidium/lftp-mirror-action@v1
+        with:
+          # SFTP credentials
+          host: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          user: ${{ secrets.SFTP_USER }}
+          pass: ${{ secrets.SFTP_PASS }}
+          # lftp settings
+          onlyNewer: true
+          settings: 'sftp:auto-confirm=yes'
+          # Mirror command options
+          localDir: './dist' # Path to the built Astro site
+          # remoteDir: '/var/www/html/example.com/public'
+          reverse: true
+          # ignoreFile: '.lftp_ignore'
+          options: '--verbose'
