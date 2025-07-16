@@ -49,7 +49,7 @@ jobs:
           settings: 'sftp:auto-confirm=yes'
           # Mirror command options
           localDir: './dist' # Path to the built Astro site
-          # remoteDir: '/var/www/html/example.com/public'
+          remoteDir: './'
           reverse: true
           # ignoreFile: '.lftp_ignore'
           options: '--verbose'
